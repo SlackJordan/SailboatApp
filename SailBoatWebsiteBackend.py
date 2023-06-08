@@ -7,6 +7,10 @@ import smtplib
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 #global variables
 places = {}
@@ -69,21 +73,22 @@ with open('testing.html','w') as file:
     file.close
 
 def send_email(message, to_email):
-    auth = ('findaboatwithpython@gmail.com', 'grefkkjkpdqwkpks')
+    user_name = os.environ.get('USER')
+    password = os.environ.get('PASSWORD')
 
     # Establish a secure session with gmail's outgoing SMTP server using your gmail account
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
-    server.login(auth[0], auth[1])
+    server.login(user_name, password)
 
     # Send email
-    server.sendmail(auth[0], to_email, message)
+    server.sendmail(user_name, to_email, message)
 
 
 now = datetime.now()
 nn = now.strftime("%m/%d/%Y %H:%M:%S")
 msg = MIMEMultipart('alternative')
-msg['Subject'] = "Sail Boats Near Madison"
+msg['Subject'] = "All Sailboats on Craigslist Under 4k"
 msg['From'] = 'sendinyasomeupdatescuh@gmail.com'
 msg['To'] = 'slack.jordan@outlook.com'
 
